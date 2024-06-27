@@ -6,7 +6,7 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:03:36 by szapata-          #+#    #+#             */
-/*   Updated: 2024/06/22 16:08:48 by szapata-         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:53:27 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 static void ft_error(const char *str, unsigned char err_type)
 {
 	if (err_type == 1)
+	{
 		write(2, str, ft_strlen(str));
+		write(2, "\n", 1);
+	}
 	else
 		perror(str);
 	exit(EXIT_FAILURE);
@@ -61,6 +64,16 @@ void	color_mid_w(mlx_image_t *img, uint_t mid_h)
 	}
 }
 
+void print_mouse(void *mlx)
+{
+	mlx = (mlx_t *)mlx;
+	int32_t x;
+	int32_t y;
+
+	mlx_get_mouse_pos(mlx, &x, &y);
+	ft_printf("%d, %d\n", x, y);
+}
+
 void	color_cursor_pos(mlx_image_t *img, double xpos, double ypos)
 {
 	uint_t	x;
@@ -88,6 +101,7 @@ int	main(int argc, char **argv)
 
 	height = 256;
 	width = 256;
+	info.mag = 3.0;
 	if (args_checker(argc, argv) && print_opt())
 		return (0);
 	info.mlx = mlx_init(width, height, "Fractol 42", true);
@@ -102,7 +116,8 @@ int	main(int argc, char **argv)
 	if (!info.img)
 		ft_error(mlx_strerror(mlx_errno), 1);
 	ft_printf("W: %u    H: %u", info.img->width, info.img->height);
-	calc_coordinates(info.img);
+	calc_coordinates(&info, argv[1]);
+	mlx_loop_hook(info.mlx, &print_mouse, (void *)info.mlx);
 	mlx_image_to_window(info.mlx, info.img, 0, 0);
 	mlx_loop(info.mlx);
 	mlx_terminate(info.mlx);

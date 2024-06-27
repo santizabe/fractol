@@ -6,11 +6,12 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 19:16:33 by szapata-          #+#    #+#             */
-/*   Updated: 2024/06/22 22:09:36 by szapata-         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:56:20 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include <stdio.h>
 #define MAX_ITER 150
 /**
  * @img: img struct;
@@ -30,14 +31,14 @@ void	color_pixel(void *pixel, uchar_t i)
 		ft_memset(pixel, 0, 4);
 	else
 	{
-		ft_memset(pixel, 0xff, 1);
+		ft_memset(pixel, 0xfa, 1);
 		ft_memset(pixel + 1, i * i, 1);
 		ft_memset(pixel + 2, i * i, 1);
 		ft_memset(pixel + 3, 245, 1);
 	}
 }
 
-void	mandelbrot_calc(void *pixel, double r, double i)
+void	mandel_calc(void *pixel, double r, double i)
 {
 	uchar_t	iter;
 	double	x;
@@ -58,28 +59,63 @@ void	mandelbrot_calc(void *pixel, double r, double i)
 	color_pixel(pixel, iter);
 }
 
-void	calc_coordinates(mlx_image_t *img)
+void	julia_calc(void *pixel, double r, double i)
 {
-	double	xmag;
-	double	pxr;
+	uchar_t	iter;
+	double	x;
+	double	y;
+	double	xtmp;
+	
+	iter = 0;
+	xtmp = 0;
+	x = 0.2;
+	y = 0.1;
+	while ((r * r) + (i * i) < (2 * 2) && iter < MAX_ITER)
+	{
+		xtmp = (r * r) - (i * i) + x;
+		i = (2 * r * i) + y;
+		r = xtmp;
+		iter++;
+	}
+	color_pixel(pixel, iter);
+}
+
+void	draw_fractal(t_info *inf, void (*f)(void *, double, double))
+{
 	double	r;
 	double	i;
-	int		iter;
+	double	xmag;
+	void	*pixel;
+	uint_t	pxr;
+	uint_t	iterx;
+	uint_t	itery;
 
-	pxr = img->height / 5.0;
-	xmag = img->width / pxr;
-	r = (xmag / 2) * -1;
-	i = -2.5;
-	iter = 0;
-	while (i < 2.5)
+	pxr = inf->img->height / inf->mag;
+	xmag = inf->img->width / pxr;
+	r = (xmag / 2) * -1.0;
+	i = (inf->mag / 2.0) * -1;
+	iterx = 0;
+	itery = 1;
+	pixel = inf->img->pixels;
+	while (itery <= inf->img->height)
 	{
-		r = (xmag / 2) * -1;
-		while (r < xmag / 2)
+		r = (xmag / 2) * -1.0;
+		iterx = (inf->img->width * itery) - inf->img->width;
+		while (iterx < inf->img->width * itery)
 		{
-			mandelbrot_calc(img->pixels + (iter * 4), r, i);
-			iter++;
-			r += 1 / pxr;
+			(*f)(pixel + (iterx * 4), r, i);
+			iterx++;
+			r += 1.0 / pxr;
 		}
-		i += 1 / pxr;
+		itery++;
+		i += 1.0 / pxr;
 	}
+}
+
+void	calc_coordinates(t_info *info, char *str)
+{
+	if (str[0] == 'M' || str[0] == 'm' || str[0] == 'B')
+		draw_fractal(info, &mandel_calc);
+	else
+		draw_fractal(info, julia_calc);
 }
