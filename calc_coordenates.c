@@ -6,13 +6,13 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 19:16:33 by szapata-          #+#    #+#             */
-/*   Updated: 2024/06/27 16:56:20 by szapata-         ###   ########.fr       */
+/*   Updated: 2024/07/09 05:08:35 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
-#define MAX_ITER 150
+#define MAX_ITER 250
 /**
  * @img: img struct;
  * xmag: width magnitude.
@@ -25,26 +25,38 @@
 // 	return (r << 24 | g << 16 | b << 8 | a);
 // }
 
-void	color_pixel(void *pixel, uchar_t i)
+void	color_pixel(void *pixel, uchar_t i, uchar_t c)
 {
+	uchar_t	*pxl;
+	uchar_t	iter;
+
+	iter = 0;
+	pxl = (uchar_t *)pixel;
 	if (i == MAX_ITER)
 		ft_memset(pixel, 0, 4);
 	else
 	{
-		ft_memset(pixel, 0xfa, 1);
-		ft_memset(pixel + 1, i * i, 1);
-		ft_memset(pixel + 2, i * i, 1);
-		ft_memset(pixel + 3, 245, 1);
+		while (iter < 3)
+		{
+			if (iter == c)
+				ft_memset(pxl + iter, 0xba, 1);
+			else
+				ft_memset(pxl + iter, i * i + 200, 1);
+			iter++;
+		}
+		ft_memset(pixel + 3, 240, 1);
 	}
 }
 
-void	mandel_calc(void *pixel, double r, double i)
+void	mandel_calc(void *inf, void *pixel, double r, double i)
 {
-	uchar_t	iter;
+	t_info	*info;
+	uint_t	iter;
 	double	x;
 	double	y;
 	double	xtmp;
 	
+	info = (t_info *)inf;
 	iter = 0;
 	xtmp = 0;
 	x = 0;
@@ -56,66 +68,70 @@ void	mandel_calc(void *pixel, double r, double i)
 		x = xtmp;
 		iter++;
 	}
-	color_pixel(pixel, iter);
+	color_pixel(pixel, iter, info->color);
 }
 
-void	julia_calc(void *pixel, double r, double i)
+void	julia_calc(void *info, void *pixel, double r, double i)
 {
-	uchar_t	iter;
-	double	x;
-	double	y;
+	t_info	*inf;
+	uint_t	iter;
 	double	xtmp;
-	
+
+	inf = (t_info *)info;
 	iter = 0;
 	xtmp = 0;
-	x = 0.2;
-	y = 0.1;
 	while ((r * r) + (i * i) < (2 * 2) && iter < MAX_ITER)
 	{
-		xtmp = (r * r) - (i * i) + x;
-		i = (2 * r * i) + y;
+		xtmp = (r * r) - (i * i) + inf->xd;
+		i = (2 * r * i) + inf->yd;
 		r = xtmp;
 		iter++;
 	}
-	color_pixel(pixel, iter);
+	color_pixel(pixel, iter, inf->color);
 }
 
-void	draw_fractal(t_info *inf, void (*f)(void *, double, double))
+void	draw_fractal(t_info *inf, void (*f)(void *, void *, double, double))
 {
 	double	r;
 	double	i;
-	double	xmag;
 	void	*pixel;
-	uint_t	pxr;
 	uint_t	iterx;
 	uint_t	itery;
 
-	pxr = inf->img->height / inf->mag;
-	xmag = inf->img->width / pxr;
-	r = (xmag / 2) * -1.0;
-	i = (inf->mag / 2.0) * -1;
+	r = inf->r;
+	i = inf->i;
 	iterx = 0;
 	itery = 1;
 	pixel = inf->img->pixels;
 	while (itery <= inf->img->height)
 	{
-		r = (xmag / 2) * -1.0;
+		r = inf->r;
 		iterx = (inf->img->width * itery) - inf->img->width;
 		while (iterx < inf->img->width * itery)
 		{
-			(*f)(pixel + (iterx * 4), r, i);
+			(*f)(inf, pixel + (iterx * 4), r, i);
 			iterx++;
-			r += 1.0 / pxr;
+			r += 1.0 / inf->pxr;
 		}
 		itery++;
-		i += 1.0 / pxr;
+		i += 1.0 / inf->pxr;
 	}
 }
 
-void	calc_coordinates(t_info *info, char *str)
+void	init_coor(t_info *info)
 {
+	info->pxr = info->img->height / info->mag;
+	info->i = (info->mag / 2.0) * -1;
+	info->xmag = info->img->width / info->pxr;
+	info->r = (info->xmag / 2.0) * -1;
+}
+
+void	calc_coordinates(t_info *info, char *str, uchar_t i)
+{
+	if (i)
+		init_coor(info);
 	if (str[0] == 'M' || str[0] == 'm' || str[0] == 'B')
 		draw_fractal(info, &mandel_calc);
 	else
-		draw_fractal(info, julia_calc);
+		draw_fractal(info, &julia_calc);
 }
