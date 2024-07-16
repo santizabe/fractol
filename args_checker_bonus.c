@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args_checker.c                                     :+:      :+:    :+:   */
+/*   args_checker_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/12 15:38:07 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/12 17:23:27 by szapata-         ###   ########.fr       */
+/*   Created: 2024/07/12 17:51:32 by szapata-          #+#    #+#             */
+/*   Updated: 2024/07/12 17:59:11 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
 static int	print_opt(uchar_t c)
 {
 	if (c == 1)
 	{
 		ft_printf("Please add a valid input:\n");
-		ft_printf("\t- Mandelbrot\n\t- Julia\n\n");
+		ft_printf("\t- Mandelbrot\n\t- Julia\n\t- Ship\n\n");
 	}
 	else if (c == 2)
 	{
@@ -66,7 +66,8 @@ int	args_checker(int argc, char **argv)
 				|| !ft_strncmp("Julia", argv[1], strlen)
 				|| !ft_strncmp("julia", argv[1], strlen)
 				|| !ft_strncmp("Gaston", argv[1], strlen)
-				|| !ft_strncmp("Benoit", argv[1], strlen)))
+				|| !ft_strncmp("Benoit", argv[1], strlen)
+				|| !ft_strncmp("Ship", argv[1], strlen)))
 		&& print_opt(1))
 		return (-1);
 	else if ((c == 'j' || c == 'J' || c == 'G'))

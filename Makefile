@@ -1,38 +1,60 @@
 NAME	= fractol
+BONUS	= fractol_bonus
 CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code -Ofast
 CC		= clang
 LIBMLX	= ./MLX42
 FT_PRINTF = ./ft_printf/libftprintf.a
+MLX_42	= MLX42/libmlx42.a
 
 HEADERS	:= -I $(LIBMLX)/include/MLX42
 LIBS	:= $(LIBMLX)/libmlx42.a -ldl -lglfw -pthread -lm
-SRCS	:= $(shell find . -iname "*.c")
+SRCS	:= args_checker.c calc_coordenates.c change_color.c main.c \
+			scroll_recalc.c arrow_manager.c calc_h_v_lines.c ft_atod.c \
+			ft_isdouble.c misc.c zoom_manager.c color_pixel.c
+B_SRC	:= args_checker_bonus.c main.c calc_coor_bonus.c change_color.c \
+			scroll_recalc.c arrow_manager.c calc_h_v_lines.c ft_atod.c \
+			ft_isdouble.c misc.c zoom_manager.c color_pixel.c
 OBJS	:= ${SRCS:.c=.o}
+B_OBJS	:= ${B_SRC:.c=.o}
 
-all: libmlx printf $(NAME)
+all: $(NAME)
 
-libmlx:
-	@make -C $(LIBMLX)
+$(MLX_42):
+	@make -s -C $(LIBMLX)
 
-printf:
-	@make bonus -C ft_printf
+$(FT_PRINTF):
+	@make -s bonus -C ft_printf
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
-$(NAME): $(OBJS)
+bonus: $(BONUS)
+
+$(BONUS): $(MLX_42) $(FT_PRINTF) $(B_OBJS)
+	@$(CC) $(B_OBJS) $(LIBS) $(HEADERS) $(FT_PRINTF) -o $(BONUS)
+
+$(NAME): $(MLX_42) $(FT_PRINTF) $(OBJS)
 	@$(CC) $(OBJS) $(LIBS) $(HEADERS) $(FT_PRINTF) -o $(NAME)
 
 clean:
 	@rm -rf *.o
-	@make clean -C MLX42
-	@make clean -C ft_printf
+	@make clean -s -C MLX42
+	@make clean -s -C ft_printf
 
-fclean: clean
+fclean:
+	@rm -rf *.o
 	@rm -rf $(NAME)
-	@make fclean -C ft_printf
-	@make fclean -C MLX42
+	@make fclean -s -C ft_printf
+	@make fclean -s -C MLX42
+
+bfclean:
+	@rm -rf *.o
+	@rm -rf $(BONUS)
+	@make fclean -s -C ft_printf
+	@make fclean -s -C MLX42
 
 re: fclean all
 
-.PHONY: all, clean, fclean, re, libmlx
+reb: bfclean bonus
+
+.PHONY: all clean fclean re libmlx bonus bfclean

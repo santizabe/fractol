@@ -6,7 +6,7 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:03:36 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/12 15:51:06 by szapata-         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:27:22 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	main(int argc, char **argv)
 	if (set_w_h(&info))
 		ft_error(mlx_strerror(mlx_errno), 1);
 	init_struct(argc, argv, &info);
-	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	info.mlx = mlx_init(info.width, info.height, "Fractol 42", true);
 	if (!info.mlx)
 		ft_error(mlx_strerror(mlx_errno), 1);
@@ -64,7 +63,8 @@ int	main(int argc, char **argv)
 	if (!info.img)
 		ft_error(mlx_strerror(mlx_errno), 1);
 	calc_coordinates(&info, argv[1], 1);
-	mlx_loop_hook(info.mlx, &scroll_recalc, (void *)&info);
+	if (info.scroll)
+		mlx_loop_hook(info.mlx, &scroll_recalc, (void *)&info);
 	mlx_scroll_hook(info.mlx, &zoom, (void *)&info);
 	mlx_key_hook(info.mlx, &key_manager, (void *)&info);
 	mlx_image_to_window(info.mlx, info.img, 0, 0);

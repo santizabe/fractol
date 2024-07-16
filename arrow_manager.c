@@ -6,7 +6,7 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 15:20:45 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/12 15:43:30 by szapata-         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:54:19 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,19 @@ void	shift_right(t_info *info)
 	info->r = info->r + (1.0 / info->pxr);
 	re = info->r + (info->width * 1.0 / info->pxr);
 	calc_v_line(info, info->img->pixels + len, info->i, re);
+}
+
+void	arrow_manager(mlx_key_data_t kd, void *p)
+{
+	t_info	*info;
+
+	info = (t_info *)p;
+	if (kd.key == MLX_KEY_UP)
+		shift_up(info);
+	else if (kd.key == MLX_KEY_DOWN)
+		shift_down(info);
+	else if (kd.key == MLX_KEY_LEFT)
+		shift_left(info);
+	else
+		shift_right(info);
 }

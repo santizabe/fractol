@@ -6,48 +6,20 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 19:16:33 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/12 15:20:15 by szapata-         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:26:57 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
 #include <math.h>
-#define MAX_ITER 250
+#define MAX_ITER 255
 /**
  * @img: img struct;
  * xmag: width magnitude.
  * ypxr: height pixel rate.
  * @return: void.
  */
-
-// uint_t	get_rgba(uchar_t r, uchar_t g, uchar_t b, uchar_t a)
-// {
-// 	return (r << 24 | g << 16 | b << 8 | a);
-// }
-
-void	color_pixel(void *pixel, uchar_t i, uchar_t c)
-{
-	uchar_t	*pxl;
-	uchar_t	iter;
-
-	iter = 0;
-	pxl = (uchar_t *)pixel;
-	if (i == MAX_ITER)
-		ft_memset(pixel, 0, 4);
-	else
-	{
-		while (iter < 3)
-		{
-			if (iter == c)
-				ft_memset(pxl + iter, 0x5a, 1);
-			else
-				ft_memset(pxl + iter, i * i + 100, 1);
-			iter++;
-		}
-		ft_memset(pixel + 3, 240, 1);
-	}
-}
 
 void	mandel_calc(void *inf, void *pixel, double r, double i)
 {

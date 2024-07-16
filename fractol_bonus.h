@@ -1,23 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/16 19:41:51 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/16 01:07:03 by szapata-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef FRACTOL_BONUS_H
+# define FRACTOL_BONUS_H
 # include "MLX42.h"
 # include "ft_printf/ft_printf.h"
-
-# ifndef MAX_ITER
-#  define MAX_ITER 255
-# endif
 
 typedef unsigned int uint_t;
 typedef unsigned char uchar_t;
@@ -47,6 +31,7 @@ void	init_struct(int argc, char **argv, t_info *info);
 void	calc_coordinates(t_info *info, char *str, uchar_t i);
 void	julia_calc(void *info, void *pixel, double r, double i);
 void	mandel_calc(void *inf, void *pixel, double r, double i);
+void	ship_calc(void *info, void *pixel, double r, double i);
 void	calc_v_line(t_info *info, void *pxl, double i, double r);
 void	calc_h_line(t_info *info, void *pxl, double i, double r);
 void	arrow_manager(mlx_key_data_t kd, void *p);
