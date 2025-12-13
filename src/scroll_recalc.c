@@ -6,11 +6,11 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 15:26:27 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/12 15:26:46 by szapata-         ###   ########.fr       */
+/*   Updated: 2025/11/14 19:01:45 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include <fractol.h>
 
 void	scroll_recalc(void *info)
 {

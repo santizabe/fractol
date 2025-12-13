@@ -6,11 +6,11 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 17:48:26 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/16 02:09:41 by szapata-         ###   ########.fr       */
+/*   Updated: 2025/11/14 19:01:45 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include <fractol.h>
 
 void	color_pixel(void *pixel, uchar_t i, uchar_t c)
 {

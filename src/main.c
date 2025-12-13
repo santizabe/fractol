@@ -6,13 +6,13 @@
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:03:36 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/12 17:27:22 by szapata-         ###   ########.fr       */
+/*   Updated: 2025/12/13 15:56:03 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "fractol.h"
+#include <fractol.h>
 
 static void	ft_error(const char *str, unsigned char err_type)
 {
@@ -68,7 +68,7 @@ int	main(int argc, char **argv)
 	mlx_scroll_hook(info.mlx, &zoom, (void *)&info);
 	mlx_key_hook(info.mlx, &key_manager, (void *)&info);
 	mlx_image_to_window(info.mlx, info.img, 0, 0);
-	mlx_loop(info.mlx);
+    mlx_loop(info.mlx);
 	mlx_delete_image(info.mlx, info.img);
 	mlx_terminate(info.mlx);
 	return (0);

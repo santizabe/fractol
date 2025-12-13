@@ -1,41 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atod.c                                          :+:      :+:    :+:   */
+/*   ft_isdouble.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: szapata- <szapata-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/12 15:24:27 by szapata-          #+#    #+#             */
-/*   Updated: 2024/07/12 15:24:56 by szapata-         ###   ########.fr       */
+/*   Created: 2024/07/12 17:22:58 by szapata-          #+#    #+#             */
+/*   Updated: 2025/11/14 19:01:45 by szapata-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include <fractol.h>
 
-double	ft_atod(char *s)
+int	ft_isdouble(char *s)
 {
-	double	res;
-	double	fraction;
-	char	sign;
+	char	p;
 
-	sign = 0;
-	res = 0.0;
-	fraction = 1.0;
-	if ((*s == '-' && --sign) || *s == '+')
+	p = 0;
+	if (*s == '+' || *s == '-')
 		s++;
-	while (ft_isdigit(*s))
+	if (*s == '.')
+		return (0);
+	while (s && *s)
 	{
-		res = (res * 10) + (*s - 48);
+		if (!ft_isdigit(*s) && *s != '.')
+			return (0);
+		else if (*s == '.' && ++p)
+			if (p == 2)
+				return (0);
 		s++;
 	}
-	s++;
-	while (ft_isdigit(*s))
-	{
-		fraction /= 10.0;
-		res += (*s - 48) * fraction;
-		s++;
-	}
-	if (sign)
-		return (res * -1);
-	return (res);
+	return (1);
 }
