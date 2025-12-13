@@ -57,12 +57,13 @@ Julia with Mouse Tracking
 ./fractol julia <x> <y> -s
 ```
 
-⌨️ Controls
-Key / Action	Effect
-Arrow Keys      Move around the fractal
-Mouse Wheel     Zoom in / Zoom out
-Mouse Move (-s)	Modify Julia parameters
-ESC	Exit the program
+| Key / Action      | Effect                  |
+| ----------------- | ----------------------- |
+| Arrow Keys        | Move around the fractal |
+| Mouse Wheel       | Zoom in / Zoom out      |
+| Mouse Move (`-s`) | Modify Julia parameters |
+| ESC               | Exit the program        |
+
 
 🛠️ Compilation
 Requirements
