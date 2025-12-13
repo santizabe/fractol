@@ -65,24 +65,24 @@ Julia with Mouse Tracking
 | ESC               | Exit the program        |
 
 
-🛠️ Compilation
+## 🛠️ Compilation
 Requirements
 - MLX42
 - GLFW
 - pthread
 
 
-📚 Learning Outcomes
-Complex numbers and mathematical visualization
+## 📚 Learning Outcomes
+- Complex numbers and mathematical visualization
 
-Event-driven programming
+- Event-driven programming
 
-Graphics rendering with MLX42
+- Graphics rendering with MLX42
 
-Optimization and performance tuning in C
+- Optimization and performance tuning in C
 
-🧑‍🎓 Santiago Zapata Bedoya
+## 🧑‍🎓 Santiago Zapata Bedoya
 Project developed as part of the 42 School curriculum.
 
-📜 License
+## 📜 License
 This project is intended for educational purposes under 42 School rules.
